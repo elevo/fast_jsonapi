@@ -205,7 +205,7 @@ module FastJsonapi
           key: options[:key] || run_key_transform(base_key),
           name: name,
           id_method_name: options[:id_method_name] || "#{base_serialization_key}#{id_postfix}".to_sym,
-          record_type: options[:record_type] || run_key_transform(base_key_sym),
+          record_type: options[:record_type] || options[:serializer]&.record_type || run_key_transform(base_key_sym),
           object_method_name: options[:object_method_name] || name,
           object_block: block,
           serializer: compute_serializer_name(options[:serializer] || base_key_sym),
