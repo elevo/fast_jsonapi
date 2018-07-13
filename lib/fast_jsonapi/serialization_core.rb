@@ -48,8 +48,11 @@ module FastJsonapi
       def ids_hash_from_record_and_relationship(record, relationship, params = {})
         polymorphic = relationship[:polymorphic]
 
+        record_id = fetch_id(record, relationship, params)
+        return if record_id.nil?
+
         return ids_hash(
-          fetch_id(record, relationship, params),
+          record_id,
           relationship[:record_type]
         ) unless polymorphic
 
@@ -182,7 +185,7 @@ module FastJsonapi
           object = relationship[:object_block].call(record, params)
 
           return object.map(&:id) if object.respond_to? :map
-          return object.id
+          return object&.id
         end
 
         record.public_send(relationship[:id_method_name])
